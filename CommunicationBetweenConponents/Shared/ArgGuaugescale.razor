@@ -25,27 +25,31 @@
 
         @if (ShowColorPicker)
         {
-            <div class="col-sm-12 col-lg-8 my-3 my-lg-5">
+    <div class="col-sm-12 col-lg-8 my-3 my-lg-5 row">
 
-                <div class="col-6 text-left align-middle pt-4 pl-5">
-                    <h4 class="my-4">Choose color</h4>
-                    <RadzenColorPicker @bind-Value=@Fill ShowHSV=false ShowRGBA=false ShowColors=true ShowButton=true Change=@OnColorChange />
-                </div>
-
-            </div>
+        <div class="col-6 text-left align-middle pt-4 pl-5">
+            <h4 class="my-4">Choose color</h4>
+            <RadzenColorPicker @bind-Value=@Fill ShowHSV=false ShowRGBA=false ShowColors=true ShowButton=true Change=@OnColorChange />
+        </div>
+        <div>
+            <p> component2 Changes the title color of the parent component by using EventCallbacks. </p>
+        </div>
+    </div>
         }
 
         @if (ShowScale)
         {
-            <div class="col-sm-12 col-lg-8 my-3 my-lg-5">
+    <div class="col-sm-12 col-lg-8 my-3 my-lg-5 row">
 
-                <div class="col-6 text-left align-middle pt-4 pl-5">
-                    <p>
-                        <label><span class="d-block mt-3 mb-1">Value</span> <RadzenSlider @bind-Value=@value TValue="int" Min="0" Max="100" Change=@(arg => OnScaleChange(arg)) Style="width: 200px" /></label>
-                    </p>
-                </div>
-
-            </div>
+        <div class="col-6 text-left align-middle pt-4 pl-5">
+            <p>
+                <label><span class="d-block mt-3 mb-1">Value</span> <RadzenSlider @bind-Value=@value TValue="int" Min="0" Max="100" Change=@(arg => OnScaleChange(arg)) Style="width: 200px" /></label>
+            </p>
+        </div>
+        <div>
+            <p> component1 Changes the value of the sibling component by using"ref" and changes the value of parent component by using EventCallbacks. </p>
+        </div>
+    </div>
         }
     </div>
 </div>
