@@ -1,0 +1,92 @@
+﻿
+@inject NotifierService Notifier
+@using System.Drawing
+
+
+<h1 class="titleConponent" style="color:@Fill">
+    @Fill
+</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-lg-8 my-3 my-lg-5">
+            <RadzenArcGauge Style="width: 100%; height: 250px;">
+                <RadzenArcGaugeScale Step="10" Min="0" Max="100" MinorStep="2" Radius="1.5" TickPosition=@tickPosition Y="0.9" Margin="0">
+                    <RadzenArcGaugeScaleValue Fill="@Fill" Value=@value ShowValue=@showValue>
+                        <Template Context="pointer">
+                            <h4>
+
+                                @pointer.Value%<sup>@Sub </sup>
+                            </h4>
+                        </Template>
+                    </RadzenArcGaugeScaleValue>
+                </RadzenArcGaugeScale>
+            </RadzenArcGauge>
+        </div>
+
+        @if (ShowColorPicker) { 
+        <div class="col-sm-12 col-lg-8 my-3 my-lg-5">
+
+            <div class="col-6 text-left align-middle pt-4 pl-5">
+                <h4 class="my-4">Choose color</h4>
+                <RadzenColorPicker @bind-Value=@Fill ShowHSV=false ShowRGBA=false ShowColors=true ShowButton=true Change=@OnColorChange />
+            </div>
+
+        </div>
+        }
+    </div>
+</div>
+
+<style>
+
+    .titleConponent {
+        font-family: 'Pacifico', cursive;
+        @*color : @Fill;*@ /*not working here */
+    }
+</style>
+
+
+@code {
+    [Parameter]
+    public string Fill { get; set; }
+
+    [Parameter]
+    public bool ShowColorPicker { get; set; }
+
+    [Parameter]
+    public Action<string> ColorChanged { get; set; }
+
+    [Parameter]
+    public Action<int> ScaleChanged { get; set; }
+
+    [Parameter]
+    public bool ShowScale { get; set; }
+
+    string Sub;
+
+    bool showValue = true;
+    int value = 50;
+    IEnumerable<GaugeTickPosition> tickPositions = Enum.GetValues(typeof(GaugeTickPosition)).Cast<GaugeTickPosition>();
+    GaugeTickPosition tickPosition = GaugeTickPosition.Outside;
+
+
+    protected override void OnInitialized()
+    {
+
+        Notifier.OnScaleChange += ChangeScale;
+        Sub = Fill.Equals(Color.Pink.Name) ? "Cute" : "Handsome";
+    }
+
+    private void ChangeScale()
+    {
+        value = Fill.Equals(Color.Pink.Name) ? Notifier.PinkScale : (100 - Notifier.PinkScale);
+        StateHasChanged();
+    }
+    private void OnColorChange(string newColor)
+    {
+        Fill = newColor;
+        //    Fill = Color.FromArgb(135, 78, 254).Name;
+        ColorChanged(Fill);
+
+        StateHasChanged();
+    }
+}

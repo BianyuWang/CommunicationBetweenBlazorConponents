@@ -1,0 +1,46 @@
+﻿
+@inject NotifierService Notifier
+
+@page "/counter"
+
+<h1><span style="color: pink">Cute</span> VS. <span style="color: @newColorFromChildConponent"> Handsome</span></h1>
+
+<p>
+    <label><span class="d-block mt-3 mb-1">Pink: @value</span>   <RadzenSlider @bind-Value=@value TValue="int" Min="0" Max="100" Change=@(arg => OnChange(arg)) Style="width: 400px" /><span class="d-block mt-3 mb-1">Blue : @(100-value)</span></label>
+</p>
+<div class="row align-middle">
+    <div class="col-md-5">   <ArgGuaugescale Fill="@Color.Pink.Name" ShowColorPicker="false"></ArgGuaugescale></div>
+    <div class="col-md-2"><img src="images/giphy.gif" width="120" height="120"/> </div>
+    <div class="col-md-5">  <ArgGuaugescale Fill="@newColorFromChildConponent" ShowColorPicker="true" ColorChanged="@ColorChanged"></ArgGuaugescale></div>
+ 
+   
+</div>
+
+
+
+@code {
+
+    int value = 50;
+
+    string newColorFromChildConponent =  Color.CadetBlue.Name;
+
+    protected override void OnInitialized()
+    {
+
+        Notifier.OnScaleChange += StateHasChanged;
+
+    }
+
+
+    void OnChange(dynamic value)
+    {
+
+        Notifier.SetPattern(value);
+    }
+
+    void ColorChanged(string newColor)
+    {
+        newColorFromChildConponent = newColor;
+         StateHasChanged();
+    }
+}
