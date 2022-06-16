@@ -23,15 +23,29 @@
             </RadzenArcGauge>
         </div>
 
-        @if (ShowColorPicker) { 
-        <div class="col-sm-12 col-lg-8 my-3 my-lg-5">
+        @if (ShowColorPicker)
+        {
+            <div class="col-sm-12 col-lg-8 my-3 my-lg-5">
 
-            <div class="col-6 text-left align-middle pt-4 pl-5">
-                <h4 class="my-4">Choose color</h4>
-                <RadzenColorPicker @bind-Value=@Fill ShowHSV=false ShowRGBA=false ShowColors=true ShowButton=true Change=@OnColorChange />
+                <div class="col-6 text-left align-middle pt-4 pl-5">
+                    <h4 class="my-4">Choose color</h4>
+                    <RadzenColorPicker @bind-Value=@Fill ShowHSV=false ShowRGBA=false ShowColors=true ShowButton=true Change=@OnColorChange />
+                </div>
+
             </div>
+        }
 
-        </div>
+        @if (ShowScale)
+        {
+            <div class="col-sm-12 col-lg-8 my-3 my-lg-5">
+
+                <div class="col-6 text-left align-middle pt-4 pl-5">
+                    <p>
+                        <label><span class="d-block mt-3 mb-1">Value</span> <RadzenSlider @bind-Value=@value TValue="int" Min="0" Max="100" Change=@(arg => OnScaleChange(arg)) Style="width: 200px" /></label>
+                    </p>
+                </div>
+
+            </div>
         }
     </div>
 </div>
@@ -64,7 +78,7 @@
     string Sub;
 
     bool showValue = true;
-    int value = 50;
+    public  int value = 50;
     IEnumerable<GaugeTickPosition> tickPositions = Enum.GetValues(typeof(GaugeTickPosition)).Cast<GaugeTickPosition>();
     GaugeTickPosition tickPosition = GaugeTickPosition.Outside;
 
@@ -86,6 +100,15 @@
         Fill = newColor;
         //    Fill = Color.FromArgb(135, 78, 254).Name;
         ColorChanged(Fill);
+
+        StateHasChanged();
+    }
+
+    private void OnScaleChange(int newScale)
+    {
+        value = newScale;
+   
+        ScaleChanged(newScale);
 
         StateHasChanged();
     }
